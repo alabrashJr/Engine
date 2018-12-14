@@ -63,9 +63,17 @@ public:
 		//delete broadphase;
 	}
 	void update() {
-		renderObjects();// renderAllObjects();
-		renderGUI();
-		renderGrid();
+		if (false) {
+			renderToTexture(); //renderObjects();
+			renderGUI();
+			renderGrid();
+		}
+		else {
+			renderObjects();
+			renderGUI();
+			renderGrid();
+		}
+		
 	}
 	// Editor rendering here
 	void renderObjects() {
@@ -92,6 +100,9 @@ public:
 			}
 
 		}
+	}
+	void renderToTexture() {
+
 	}
 	void renderGUI() {
 		// Imgui 
@@ -226,6 +237,9 @@ public:
 		this->camera->setPitch(-60.0f);
 		this->scene.physicsWorld = new PhysicsWorld(0);
 		lightDir = glm::vec3(3.0f, 15.0f, 5.0f);
+
+		// Creating a framebuffer for drawing into
+		// Setting this framebuffer to imgui image
 	}
 private:
 	// Filds

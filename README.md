@@ -5,6 +5,8 @@ Engine is a 3D game engine.
   - Immediate mod graphical user interface
   - Level desing tool
 
+![ScreenShot](https://github.com/furkansarihan/Engine/blob/master/ss.png)
+
 ### Included Libraries
 
 Engine uses open source libraries to look good.
