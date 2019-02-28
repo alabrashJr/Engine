@@ -27,4 +27,8 @@ public:
 			dynamicsWorld->setGravity(btVector3(0, 0, 0));
 		// 0 means editor mode and there no gravity
 	}
+
+	void setGravity(float newGravity) {
+		dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	}
 };

@@ -29,6 +29,14 @@ public:
 			glVertex3f(50, 0, i);
 			glVertex3f(-50, 0, i);
 			glEnd();
+
+			glBegin(GL_LINES);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 0, 1);
+			glEnd();
+
+
+
 		}
 		
 	}

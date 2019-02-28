@@ -56,24 +56,16 @@ public:
 		return scene.gameObjects.size();
 	}
 	void deletePhysics() {
-		//delete dynamicsWorld;
-		//delete solver;
-		//delete collisionConfiguration;
-		//delete dispatcher;
-		//delete broadphase;
+		//delete scene.physicsWorld.dynamicsWorld;
+		//delete scene.physicsWorld.solver;
+		//delete scene.physicsWorld.collisionConfiguration;
+		//delete scene.physicsWorld.dispatcher;
+		//delete scene.physicsWorld.broadphase;
 	}
 	void update() {
-		if (false) {
-			renderToTexture(); //renderObjects();
-			renderGUI();
-			renderGrid();
-		}
-		else {
-			renderObjects();
-			renderGUI();
-			renderGrid();
-		}
-		
+		renderObjects();
+		//renderGUI();
+		renderGrid();
 	}
 	// Editor rendering here
 	void renderObjects() {
@@ -114,13 +106,15 @@ public:
 		if (ImGui::Button("Toggle GamePlay")) {
 			if (!gameActive) {
 				generateGamePhysicsWorld(1); gameActive = true;
+				//scene.physicsWorld->setGravity(-10); gameActive = true;
 			}
 			else {
-				generateGamePhysicsWorld(0); gameActive = false;
+				generateGamePhysicsWorld(0); gameActive = false; 
+				//scene.physicsWorld->setGravity(0); gameActive = false;
 			}
 		}
 		ImGui::End();
-		if (!gameActive) {
+		//if (!gameActive) {
 			ImGui::Begin("Inspector");
 			ImGui::SetWindowSize(ImVec2(200.0, 600.0));
 			ImGui::SetWindowPos(ImVec2(0.0, 0.0), false);
@@ -169,7 +163,7 @@ public:
 				ImGui::TreePop();
 			}
 			ImGui::End();
-		}
+		//}
 	}
 	void renderGrid() {
 		grid.draw();
@@ -190,7 +184,6 @@ public:
 			}
 		}
 	}
-	
 	bool hasSelected() {
 		return anySelected;
 	}

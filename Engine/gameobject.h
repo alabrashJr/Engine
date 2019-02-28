@@ -75,7 +75,13 @@ public:
 		collider.rigidBody->setWorldTransform(trans);
 	}
 	glm::vec3 getPos() const {
-		return position;
+		//return position;
+		glm::vec3 pos;
+		btVector3 vec = collider.rigidBody->getWorldTransform().getOrigin();
+		pos.x = (float)vec.x();
+		pos.y = (float)vec.y();
+		pos.z = (float)vec.z();
+		return pos;
 	}
 	glm::mat4 getModelMatrix() {
 		glm::mat4 model;
