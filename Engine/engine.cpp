@@ -15,7 +15,8 @@
 #include <glm/glm/gtc/type_ptr.hpp>
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw_gl3.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include "editor.h"
 #include <chrono>
@@ -41,6 +42,10 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
+
+const char* glsl_version = "#version 130";
+
+ImGuiWindowFlags window_flags;
 
 int main() {
 	// Creation handling
@@ -93,8 +98,12 @@ int main() {
 	//IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui_ImplGlfwGL3_Init(window, true);
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	ImGui::StyleColorsDark();
+
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	
 
 	//*******************************************************************************************************************
 	// Shapes
@@ -164,29 +173,25 @@ int main() {
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 
-	Shader screenShader;
-	screenShader.setShaders("shaders/screen.vert", "shaders/screen.frag");
-	screenShader.use();
-	screenShader.setInt("screenTexture", 0);
-
-	unsigned int quadVAO, quadVBO;
-	glGenVertexArrays(1, &quadVAO);
-	glGenBuffers(1, &quadVBO);
-	glBindVertexArray(quadVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_MenuBar;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoNav;
+	//window_flags |= ImGuiWindowFlags_NoBackground;
+	//window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+	//window_flags |= ImGuiWindowFlags_NoDocking;
 
 	while (!glfwWindowShouldClose(window)) {
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
 		glClearColor(0.8f, 0.8f, 0.8f, 0.4f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		ImGui_ImplGlfwGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
 		// Calculating deltaTime
 		float currentFrame = (float)glfwGetTime();
@@ -199,29 +204,32 @@ int main() {
 		
 		editor->renderObjects();
 		editor->renderGrid();
-		editor->renderGUI();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//screenShader.use();
-		//glBindVertexArray(quadVAO);
-		//glBindTexture(GL_TEXTURE_2D, texColorBuffer);
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		ImGui::Begin("Main ImGui", 0, window_flags);
+		ImGui::SetWindowPos(ImVec2(0, 0));
+		ImGui::SetWindowSize(ImVec2(screenWIDTH, screenHEIGTH));
+		ImGui::End();
 
-		ImGui::Begin("Scene Window");
+		editor->renderGUI();
+
+		/*ImGui::Begin("Scene Window");
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)texColorBuffer,
 			ImVec2(ImGui::GetCursorScreenPos()),
 			ImVec2(ImGui::GetCursorScreenPos().x + screenWIDTH / 2,
-				ImGui::GetCursorScreenPos().y + screenHEIGTH / 2), ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::End();
+				ImGui::GetCursorScreenPos().y + screenHEIGTH / 2),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SetWindowSize(ImVec2(screenWIDTH/2, screenHEIGTH/2));
+		ImGui::End();*/
 
 		// Swap buffers and check for events and editor
 		ImGui::Render();
-		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

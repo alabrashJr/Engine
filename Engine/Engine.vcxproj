@@ -130,10 +130,11 @@
   <ItemGroup>
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="includes\imgui\imgui.cpp" />
-    <ClCompile Include="includes\imgui\imgui_demo.cpp" />
     <ClCompile Include="includes\imgui\imgui_draw.cpp" />
-    <ClCompile Include="includes\imgui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="game.h" />
+    <ClCompile Include="includes\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="includes\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="includes\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -181,7 +182,9 @@
     <ClInclude Include="includes\assimp\version.h" />
     <ClInclude Include="includes\imgui\imconfig.h" />
     <ClInclude Include="includes\imgui\imgui.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="includes\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="includes\imgui\imgui_internal.h" />
     <ClInclude Include="includes\imgui\stb_rect_pack.h" />
     <ClInclude Include="includes\imgui\stb_textedit.h" />
