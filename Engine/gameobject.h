@@ -22,6 +22,7 @@ public:
 	int id;
 	btTransform mInitialPosition;
 	glm::vec3 position;
+	glm::vec3 rotation;
 	// There will be a list stored all components
 	Model model; // This model class will inheriting from component class
 	Collider collider; // All Physics info stored in this class

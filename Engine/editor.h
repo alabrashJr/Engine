@@ -56,31 +56,28 @@ public:
 		return scene.gameObjects.size();
 	}
 	void deletePhysics() {
-		//delete scene.physicsWorld.dynamicsWorld;
-		//delete scene.physicsWorld.solver;
-		//delete scene.physicsWorld.collisionConfiguration;
-		//delete scene.physicsWorld.dispatcher;
-		//delete scene.physicsWorld.broadphase;
+		//scene.deleteResources();
 	}
-	void update() {
-		renderObjects();
-		//renderGUI();
-		renderGrid();
-	}
+	
 	// Editor rendering here
 	void renderObjects() {
 		for (int i = 0; i < scene.gameObjects.size(); i++)
 		{
 			// Getting Positions from Physics
-			scene.gameObjects[i].updateRenderPosition();
+			//scene.gameObjects[i].updateRenderPosition();
 			if (scene.gameObjects[i].hasShader) {
+				glDisable(GL_CULL_FACE);
+				glEnable(GL_BLEND);
 				// don't forget to enable shader before setting uniforms
 				scene.gameObjects[i].shader.use();
 				scene.gameObjects[i].shader.setMat4("projection", projection);
 				scene.gameObjects[i].shader.setMat4("view", camera->GetViewMatrix());
-				scene.gameObjects[i].shader.setVec3("lightDir", lightDir);
+				//scene.gameObjects[i].shader.setVec3("lightDir", lightDir);
 				scene.gameObjects[i].shader.setMat4("model", scene.gameObjects[i].getModelMatrix());
+				scene.gameObjects[i].shader.setInt("texture_diffuse1", scene.gameObjects[i].model.textures_loaded.at(0).id);
+				scene.gameObjects[i].shader.setVec3("objectCoord", scene.gameObjects[i].position);
 				scene.gameObjects[i].draw();
+				glDisable(GL_BLEND);
 			}
 			else {
 				defaultShader.use();
@@ -102,7 +99,7 @@ public:
 		
 		ImGui::Begin("Switcher");
 		ImGui::SetWindowSize(ImVec2(200.0, 100.0));
-		ImGui::SetWindowPos(ImVec2(screenWIDTH/2, 0.0), false);
+		//ImGui::SetWindowPos(ImVec2(screenWIDTH/2, 0.0), false);
 		if (ImGui::Button("Toggle GamePlay")) {
 			if (!gameActive) {
 				generateGamePhysicsWorld(1); gameActive = true;
@@ -116,8 +113,8 @@ public:
 		ImGui::End();
 		//if (!gameActive) {
 			ImGui::Begin("Inspector");
-			ImGui::SetWindowSize(ImVec2(200.0, 600.0));
-			ImGui::SetWindowPos(ImVec2(0.0, 0.0), false);
+			//ImGui::SetWindowSize(ImVec2(200.0, 600.0));
+			//ImGui::SetWindowPos(ImVec2(0.0, 0.0), false);
 			if (ImGui::Button("Add Cube")) {
 				generatePrimitive((PrimitiveType)cube);
 			}
@@ -146,8 +143,8 @@ public:
 			}
 			ImGui::End();
 			ImGui::Begin("Hierarchy");
-			ImGui::SetWindowSize(ImVec2(200, 600.0));
-			ImGui::SetWindowPos(ImVec2(1166.0, 0.0), false);
+			//ImGui::SetWindowSize(ImVec2(200, 600.0));
+			//ImGui::SetWindowPos(ImVec2(1166.0, 0.0), false);
 			ImGui::Text("Hello from hierarchy");
 			if (ImGui::TreeNode("Selection State: Single Selection"))
 			{
@@ -169,11 +166,14 @@ public:
 		grid.draw();
 	}
 	void generateGamePhysicsWorld(int mode) {
-		this->scene.physicsWorld = new PhysicsWorld(mode);
+		Scene *newScene = new Scene(mode);
+
 		for (int i = 0; i < this->scene.gameObjects.size(); i++) {
 			this->scene.gameObjects[i].collider.getNewRigidBody();
-			this->scene.physicsWorld->dynamicsWorld->addRigidBody(this->scene.gameObjects[i].collider.rigidBody);
+			newScene->physicsWorld->dynamicsWorld->addRigidBody(this->scene.gameObjects[i].collider.rigidBody);
 		}
+
+		this->scene = *newScene;
 	}
 	void setSelectedObject(btCollisionObject *sel) {
 		for (int i = 0; i < scene.gameObjects.size()-1; i++) {

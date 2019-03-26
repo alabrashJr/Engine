@@ -22,8 +22,8 @@
 #include <chrono>
 #include <thread>
 
-#define screenWIDTH 1366
-#define screenHEIGTH 768
+#define screenWIDTH 1600
+#define screenHEIGTH 900
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_press_callback(GLFWwindow* window, int button, int action, int mods);
@@ -31,6 +31,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window, float delta, btDiscreteDynamicsWorld* dynamicsWorld);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void createCellObjects(Shader firstShader);
 
 Editor* editor;
 //Game* game;
@@ -117,24 +119,19 @@ int main() {
 
 	//*******************************************************************************************************************
 	// ligth shader
-	Shader lightShader, lampShader, ourShader, gridShader;
+	Shader lightShader, lampShader, ourShader, gridShader, firstShader, slicesShader;
 	lightShader.setShaders("shaders/ligth.vert", "shaders/ligth.frag");
 	lampShader.setShaders("shaders/lamp.vert", "shaders/lamp.frag");
-	ourShader.setShaders("shaders/basic.vert", "shaders/basic.frag");
+	firstShader.setShaders("shaders/first.vert", "shaders/first.frag");
 	gridShader.setShaders("shaders/grid.vert", "shaders/grid.frag");
+	ourShader.setShaders("shaders/basic.vert", "shaders/basic.frag");
+	slicesShader.setShaders("shaders/slices.vert", "shaders/slices.frag");
 
-	Model plane("assets/models/primitive/plane.obj");
-	Model house("assets/models/House/WoodenCabinObj.obj");
+	//Model plane("assets/models/primitive/untitled.obj");
+	//Model house("assets/models/House/WoodenCabinObj.obj");
+	//Model nano("assets/models/nanosuit/nanosuit.obj");
 
-	GameObject o1( glm::vec3(0.0f, 0.0f, 0.0f));
-	o1.setModel(plane);
-	o1.setShader(ourShader);
-
-	Collider col;
-	col.setCollider(0, groundShape, groundMotionState, btVector3(0.0, 0.0, 0.0));
-
-	o1.setPhysics(col);
-	editor->addGameObject(o1);
+	createCellObjects(slicesShader);
 
 	// Setting our camera
 	glEnable(GL_DEPTH_TEST);
@@ -176,9 +173,9 @@ int main() {
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoScrollbar;
 	window_flags |= ImGuiWindowFlags_MenuBar;
-	window_flags |= ImGuiWindowFlags_NoMove;
+	//window_flags |= ImGuiWindowFlags_NoMove;
 	window_flags |= ImGuiWindowFlags_NoResize;
-	window_flags |= ImGuiWindowFlags_NoCollapse;
+	//window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoNav;
 	//window_flags |= ImGuiWindowFlags_NoBackground;
 	//window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
@@ -187,7 +184,7 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-		glClearColor(0.8f, 0.8f, 0.8f, 0.4f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -203,29 +200,29 @@ int main() {
 		editor->scene.physicsWorld->dynamicsWorld->stepSimulation(1 / 60.f, 10);
 		
 		editor->renderObjects();
-		editor->renderGrid();
+		//editor->renderGrid();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		ImGui::Begin("Main ImGui", 0, window_flags);
-		ImGui::SetWindowPos(ImVec2(0, 0));
-		ImGui::SetWindowSize(ImVec2(screenWIDTH, screenHEIGTH));
-		ImGui::End();
+		//ImGui::Begin("Main ImGui", 0, window_flags);
+		//ImGui::SetWindowPos(ImVec2(0, 40));
+		//ImGui::SetWindowSize(ImVec2(screenWIDTH, screenHEIGTH));
+		//ImGui::End();
 
-		editor->renderGUI();
+		//editor->renderGUI();
 
-		/*ImGui::Begin("Scene Window");
+		ImGui::Begin("Scene Window");
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)texColorBuffer,
 			ImVec2(ImGui::GetCursorScreenPos()),
-			ImVec2(ImGui::GetCursorScreenPos().x + screenWIDTH / 2,
-				ImGui::GetCursorScreenPos().y + screenHEIGTH / 2),
+			ImVec2(ImGui::GetCursorScreenPos().x + screenWIDTH, ImGui::GetCursorScreenPos().y + screenHEIGTH),
 			ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::SetWindowSize(ImVec2(screenWIDTH/2, screenHEIGTH/2));
-		ImGui::End();*/
+		ImGui::SetWindowPos(ImVec2(0,0));
+		ImGui::SetWindowSize(ImVec2(screenWIDTH, screenHEIGTH));
+		ImGui::End();
 
 		// Swap buffers and check for events and editor
 		ImGui::Render();
@@ -234,7 +231,7 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		
-		std::this_thread::sleep_for(std::chrono::milliseconds(8));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(8));
 	}
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -245,11 +242,61 @@ int main() {
 
 	return EXIT_SUCCESS;
 }
+
+void createCellObjects(Shader shader) {
+	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 0.1f, 0), 1);
+	MyMotionState* groundMotionState =
+		new MyMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+	
+	for (int i = 0; i < 57; i++)
+	{
+		Model a;
+		if (i > 9)
+		{
+			Model m("assets/models/slicesjpeg/i00" + std::to_string(i) + ".obj"); a = m;
+		}
+		else
+		{
+			Model m("assets/models/slicesjpeg/i000" + std::to_string(i) + ".obj"); a = m;
+		}
+			
+		Collider col;
+		col.setCollider(0, groundShape, groundMotionState, btVector3((float)i * 4, (float)i * 4, 0.0));
+		GameObject go(glm::vec3(0.0f, (float)i / 10, 0.0f));
+		go.setModel(a);
+		go.setShader(shader);
+		go.setPhysics(col);
+		editor->addGameObject(go);
+	}
+
+	/*int X = 128;
+	int a = 2;
+	// new implementation
+	for (int size = 20; size < 22; size++)
+	{
+		Model m("assets/models/slicesjpeg/i00" + std::to_string(size) + ".obj");
+		Collider col;
+		col.setCollider(0, groundShape, groundMotionState, btVector3(0.0, 0.0, 0.0));
+		
+		for (int i = 0; i < (X / 2); i += a)
+		{
+			for (int j = 0; j < (X / 2); j += a)
+			{
+				GameObject go(glm::vec3((float)i, (float)size/10, (float)j));
+				go.setModel(m);
+				go.setShader(firstShader);
+				go.setPhysics(col);
+				editor->addGameObject(go);
+			}
+		}
+	}*/
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	std::cout << "MOuse clicked";
+	//std::cout << "Mouse clicked";
 	if (key == GLFW_KEY_E && action == GLFW_PRESS)
-		std::cout << "MOuse clicked";
+		std::cout << "Mouse clicked";
 }
 void processInput(GLFWwindow *window, float delta, btDiscreteDynamicsWorld* dynamicsWorld)
 {

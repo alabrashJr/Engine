@@ -12,6 +12,7 @@ using namespace std;
 
 class Grid {
 public:
+	Shader basicShader;
 	float gridNum;
 	
 	Grid() {
@@ -19,6 +20,7 @@ public:
 	}
 
 	void draw() {
+		//basicShader.use();
 		for (int i = -WIDTH; i < WIDTH; i++)
 		{
 			glBegin(GL_LINES);
@@ -29,18 +31,14 @@ public:
 			glVertex3f(50, 0, i);
 			glVertex3f(-50, 0, i);
 			glEnd();
-
 			glBegin(GL_LINES);
 			glVertex3f(0, 0, 0);
 			glVertex3f(0, 0, 1);
 			glEnd();
-
-
-
 		}
 		
 	}
 	void setupMeshes() {
-		
+		basicShader.setShaders("shaders/first.vert", "shaders/first.frag");
 	}
 };

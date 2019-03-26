@@ -78,6 +78,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\includes\bullet;C:\Users\fusarihan\Desktop\git-repos\Engine\Engine\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -86,6 +87,9 @@
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -135,6 +139,9 @@
     <ClCompile Include="includes\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="includes\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="includes\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="init.cpp" />
+    <ClCompile Include="MainApplication.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -189,14 +196,17 @@
     <ClInclude Include="includes\imgui\stb_rect_pack.h" />
     <ClInclude Include="includes\imgui\stb_textedit.h" />
     <ClInclude Include="includes\imgui\stb_truetype.h" />
+    <ClInclude Include="MainApplication.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="mymotionstate.h" />
     <ClInclude Include="physicsworld.h" />
     <ClInclude Include="primitive.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader_s.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -209,6 +219,9 @@
     <None Include="includes\assimp\vector3.inl" />
     <None Include="shaders\grid.frag" />
     <None Include="shaders\grid.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

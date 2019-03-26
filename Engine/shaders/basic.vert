@@ -13,7 +13,7 @@ uniform vec3 lightDir;
 
 void main()
 {
-	intensity = dot (lightDir, mat3(transpose(inverse(model))) * aNormal);
-    TexCoords = aTexCoords;    
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+	//intensity = dot(lightDir, mat3(transpose(inverse(model))) * aNormal);
+    //TexCoords = aTexCoords;
+    gl_Position = projection * view * model  * vec4(aPos, 1.0);
 }

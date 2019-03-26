@@ -18,8 +18,15 @@ public:
 	Scene() {
 		
 	}
-	Scene(int mod) {
-
+	Scene(int mode) {
+		physicsWorld = new PhysicsWorld(mode);
+	}
+	void deleteResources() {
+		delete physicsWorld->dynamicsWorld;
+		delete physicsWorld->solver;
+		delete physicsWorld->collisionConfiguration;
+		delete physicsWorld->dispatcher;
+		delete physicsWorld->broadphase;
 	}
 };
 #endif

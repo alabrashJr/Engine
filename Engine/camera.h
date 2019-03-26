@@ -19,7 +19,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 25.5f;
+const float SPEED = 10.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
@@ -67,6 +67,11 @@ public:
 		return glm::lookAt(Position, Position + Front, Up);
 	}
 
+	glm::mat4 GetCustomViewForObject(glm::vec3 pos)
+	{
+		return glm::lookAt(pos, pos + Front, Up);
+	}
+
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
 	{
@@ -101,6 +106,8 @@ public:
 
 		// Update Front, Right and Up Vectors using the updated Euler angles
 		updateCameraVectors();
+		//std::cout << "Camera Pitch : " << Pitch << "\n";
+		//std::cout << "Camera Yaw : " << Yaw << "\n";
 	}
 
 	// Processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
