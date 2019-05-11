@@ -1,22 +1,17 @@
 #ifndef EDITOR_H
 #define EDITOR_H
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
 
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
+#include "common.h"
 
-#include "editor_tool.h"
-#include "grid.h"
-#include "primitive.h"
-#include "scene.h"
-#include "camera.h"
+
 #define screenWIDTH 1366
 #define screenHEIGTH 768
 
+//class Server;
+
 enum EditMode { noneMOD, moveMOD, sizeMOD, rotateMOD };
 enum PrimitiveType { plane, cube, sphere };
+
 
 class Editor
 {
@@ -44,6 +39,11 @@ public:
 		this->gameActive = false;
 		this->IDCOUNTER = 0;
 	}
+	
+	Editor* getEditor() {
+		return this;
+	}
+
 	void addGameObject(GameObject obj) {
 		obj.setId(IDCOUNTER); IDCOUNTER++;
 		std::vector<GameObject>::iterator it;
@@ -233,6 +233,10 @@ public:
 
 		// Creating a framebuffer for drawing into
 		// Setting this framebuffer to imgui image
+	}
+	void setCameraVector(glm::vec3 newcamera) {
+		// make new camera vector
+		cout << "yayyyyyyyyyyy";
 	}
 private:
 	// Filds

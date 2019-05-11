@@ -1,29 +1,10 @@
-#include <GLEW/glew.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <cstdlib>
-
-#include "camera.h"
-#include "model.h"
-
-#include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/matrix_transform.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
-
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
-
+#include "common.h"
 #include "editor.h"
-#include <chrono>
-#include <thread>
+#include "server.h"
 
 #define screenWIDTH 1366
 #define screenHEIGTH 768
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_press_callback(GLFWwindow* window, int button, int action, int mods);
@@ -31,9 +12,11 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window, float delta, btDiscreteDynamicsWorld* dynamicsWorld);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void webServer();
 
 Editor* editor;
 //Game* game;
+Server* server;
 
 float lastX = screenWIDTH / 2.0f;
 float lastY = screenHEIGTH / 2.0f;
@@ -46,6 +29,11 @@ float lastFrame = 0.0f;
 const char* glsl_version = "#version 130";
 
 ImGuiWindowFlags window_flags;
+
+
+void webServer() {
+	server->startServer();
+}
 
 int main() {
 	// Creation handling
@@ -104,6 +92,11 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	
+	//*******************************************************************************************************************
+	// Web Server
+	server = new Server();
+	editor->camera->setServer(server);
+	std::thread first(webServer);
 
 	//*******************************************************************************************************************
 	// Shapes
@@ -217,7 +210,7 @@ int main() {
 
 		editor->renderGUI();
 
-		/*ImGui::Begin("Scene Window");
+		ImGui::Begin("Scene Window");
 		ImGui::GetWindowDrawList()->AddImage(
 			(void *)texColorBuffer,
 			ImVec2(ImGui::GetCursorScreenPos()),
@@ -225,7 +218,7 @@ int main() {
 				ImGui::GetCursorScreenPos().y + screenHEIGTH / 2),
 			ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::SetWindowSize(ImVec2(screenWIDTH/2, screenHEIGTH/2));
-		ImGui::End();*/
+		ImGui::End();
 
 		// Swap buffers and check for events and editor
 		ImGui::Render();
@@ -242,6 +235,10 @@ int main() {
 
 	// Delete bullet things
 	editor->deletePhysics();
+	
+	// join webserver thread
+	//first.join();
+	terminate();
 
 	return EXIT_SUCCESS;
 }

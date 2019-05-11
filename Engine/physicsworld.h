@@ -1,3 +1,6 @@
+#ifndef PHYSICSWORLD_H
+#define PHYSICSWORLD_H
+
 #include "btBulletDynamicsCommon.h"
 
 class PhysicsWorld {
@@ -32,3 +35,4 @@ public:
 		dynamicsWorld->setGravity(btVector3(0, -10, 0));
 	}
 };
+#endif

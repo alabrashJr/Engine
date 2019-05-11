@@ -1,3 +1,8 @@
+#ifndef COLLIDER_H
+#define COLLIDER_H
+
+
+
 #include "btBulletDynamicsCommon.h"
 #include "mymotionstate.h"
 
@@ -33,3 +38,4 @@ public:
 private:
 
 };
+#endif // !COLLIDER_H

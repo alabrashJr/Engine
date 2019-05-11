@@ -1,3 +1,6 @@
+#ifndef GRID_H
+#define GRID_H
+
 #include <GLEW/glew.h> // holds all OpenGL type declarations
 
 #include <string>
@@ -44,3 +47,4 @@ public:
 		
 	}
 };
+#endif

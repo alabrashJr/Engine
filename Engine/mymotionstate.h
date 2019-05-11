@@ -1,3 +1,5 @@
+#ifndef MYMOTIONSTATE_H
+#define MYMOTIONSTATE_H
 
 #include "gameobject.h"
 
@@ -31,3 +33,4 @@ public:
 		mInitialPosition.setOrigin(pos);
 	}
 };
+#endif

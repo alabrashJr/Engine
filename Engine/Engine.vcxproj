@@ -22,15 +22,15 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{A52DF9EB-C536-4211-8A43-3854CA0E187B}</ProjectGuid>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <ProjectName>Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -77,10 +77,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\includes\bullet;C:\Users\fusarihan\Desktop\git-repos\Engine\Engine\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\boost_1_69_0;$(ProjectDir)\includes\bullet;$(ProjectDir)\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>E:\boost_1_69_0\stage\lib;$(ProjectDir)\libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp.lib;Bullet3Common.lib;BulletDynamics.lib;BulletCollision.lib;BulletInverseDynamics.lib;BulletSoftBody.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="engine.cpp" />
+    <ClCompile Include="server.h" />
     <ClCompile Include="includes\imgui\imgui.cpp" />
     <ClCompile Include="includes\imgui\imgui_draw.cpp" />
     <ClCompile Include="game.h" />
@@ -139,8 +140,9 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="collider.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="crow_all.h" />
     <ClInclude Include="editor.h" />
-    <ClInclude Include="editor_tool.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="includes\assimp\ai_assert.h" />
