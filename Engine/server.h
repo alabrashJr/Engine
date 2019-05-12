@@ -14,12 +14,12 @@ class Server
 public :
 	Editor* editor;
 	
-	int x = 0;
-	int y = 0;
-	int z = 0;
+	long x = 0;
+	long y = 0;
+	long z = 0;
 
 	glm::vec3 getSensorData() {
-		return glm::vec3((float)x, (float)y, (float)z);
+		return glm::vec3((long)x, (long)y, (long)z);
 	}
 
 	void startServer()

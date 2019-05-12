@@ -8,6 +8,8 @@
 
 #include <vector>
 
+#define M_PI           3.14159265358979323846  /* pi */
+
 #include "server.h"
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
@@ -52,7 +54,18 @@ public:
 
 	void updateForVR() {
 		glm::vec3 sv = server->getSensorData();
-		std::cout << "sensor -> x: " << sv.x << " y: " << sv.y << " z: " << sv.z << std::endl;
+		
+		float pitchRad = ((float)sv.z / 10000000) *+1.0f;
+		float yawRad = (float)sv.x / 10000000;
+
+		float tempPitch = (pitchRad * (180.0f / M_PI)) - 90.0f;
+		float tempYaw = yawRad * (180.0f / M_PI);
+		
+		Pitch = (double)((int)(tempPitch * 10)) / 10;
+		Yaw = (double)((int)(tempYaw * 10)) / 10;
+
+		//std::cout << "sensor -> x: " << sv.x << " y: " << sv.y << " z: " << sv.z << std::endl;
+		//std::cout << "CAMERA -> YAW: " << Yaw << " PITCH: " << Pitch << std::endl;
 	}
 
 	// Constructor with vectors
@@ -77,6 +90,7 @@ public:
 	// Returns the view matrix calculated using Euler Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
+		updateCameraVectors();
 		updateForVR();
 		return glm::lookAt(Position, Position + Front, Up);
 	}
