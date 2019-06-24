@@ -31,6 +31,7 @@ public:
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory;
+	string fullpath;
 	bool gammaCorrection;
 
 	/*  Functions   */
@@ -67,6 +68,7 @@ private:
 		}
 		// retrieve the directory path of the filepath
 		directory = path.substr(0, path.find_last_of('/'));
+		fullpath = path;
 
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);

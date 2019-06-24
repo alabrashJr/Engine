@@ -25,7 +25,7 @@ public:
 		// The world.
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 		if (mode != 0)
-			dynamicsWorld->setGravity(btVector3(0, -10, 0));
+			dynamicsWorld->setGravity(btVector3(0, -9.8f, 0));
 		else 
 			dynamicsWorld->setGravity(btVector3(0, 0, 0));
 		// 0 means editor mode and there no gravity

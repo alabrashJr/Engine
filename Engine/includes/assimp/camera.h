@@ -176,7 +176,7 @@ struct aiCamera
         , mLookAt           (0.f,0.f,1.f)
         , mHorizontalFOV    (0.25f * (float)AI_MATH_PI)
         , mClipPlaneNear    (0.1f)
-        , mClipPlaneFar     (1000.f)
+        , mClipPlaneFar     (10000.f)
         , mAspect           (0.f)
     {}
 

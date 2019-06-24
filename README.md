@@ -1,11 +1,63 @@
 # Engine
 
+### How It Looks Like
+
+![ScreenShot](https://github.com/furkansarihan/Engine/blob/master/en-ss.png)
+
+### Must Watch It In Action
+
+https://www.youtube.com/watch?v=N4iF1Vxs5t4
+
+
 Engine is a 3D game engine.
   
   - Immediate mod graphical user interface
   - Level desing tool
 
-![ScreenShot](https://github.com/furkansarihan/Engine/blob/master/ss.png)
+### Scene File
+
+  - Engine scenes can be saved as json format, example scene which includes an object;
+```json
+{
+  "version": "0.0.1",
+  "engine_mode": 0,
+  "gameobjects": [
+    {
+      "type": "model",
+      "name": "none",
+      "has_collider": true,
+      "collider_type": 0,
+      "mass": 1,
+      "scale_factor": [
+        1,
+        -1,
+        15
+      ],
+      "position": [
+        0,
+        18,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "model_path": "assets/models/primitive/cube.obj",
+      "shader_type": "textured",
+      "custom_vertex_shader_path": "none",
+      "custom_fragment_shader_path": "none",
+      "light_type": "none",
+      "color": [
+        0.30000001192092896,
+        0.1599999964237213,
+        1,
+        1
+      ]
+    }
+  ]
+}
+```
 
 ### Included Libraries
 

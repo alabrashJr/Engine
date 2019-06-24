@@ -27,6 +27,7 @@ const float SPEED = 25.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
+int engineMode;
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera
@@ -48,6 +49,8 @@ public:
 
 	Server* server;
 
+	float treshold = 0.3;
+
 	void setServer(Server* s) {
 		server = s;
 	}
@@ -61,8 +64,20 @@ public:
 		float tempPitch = (pitchRad * (180.0f / M_PI)) - 90.0f;
 		float tempYaw = yawRad * (180.0f / M_PI);
 		
-		Pitch = (double)((int)(tempPitch * 10)) / 10;
-		Yaw = (double)((int)(tempYaw * 10)) / 10;
+		tempPitch = (double)((int)(tempPitch * 10)) / 10;
+		tempYaw = (double)((int)(tempYaw * 10)) / 10;
+
+		float diffPitch = tempPitch > Pitch ? tempPitch - Pitch : Pitch - tempPitch;
+		float diffYaw = tempYaw > Yaw ? tempYaw - Yaw : Yaw - tempYaw;
+
+		if (diffPitch > treshold) {
+			Pitch = tempPitch;
+		}
+
+		if (diffYaw > treshold) {
+			Yaw = tempYaw;
+		}
+		
 
 		//std::cout << "sensor -> x: " << sv.x << " y: " << sv.y << " z: " << sv.z << std::endl;
 		//std::cout << "CAMERA -> YAW: " << Yaw << " PITCH: " << Pitch << std::endl;
@@ -91,10 +106,22 @@ public:
 	glm::mat4 GetViewMatrix()
 	{
 		updateCameraVectors();
-		updateForVR();
+
+		switch(engineMode) {
+			case 0: // editor
+				break;
+			case 1: // game
+				break;
+			case 2: // RemoteVR
+				updateForVR();
+				break;
+			default:
+				break;
+		}
+		
 		return glm::lookAt(Position, Position + Front, Up);
 	}
-
+	void setEngineMode(int mode) { engineMode = mode; }
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
 	{
@@ -144,6 +171,7 @@ public:
 
 	void setPitch(float angle) {
 		Pitch = angle;
+		updateCameraVectors();
 	}
 private:
 	// Calculates the front vector from the Camera's (updated) Euler Angles

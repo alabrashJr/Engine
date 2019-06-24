@@ -11,9 +11,14 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 lightDir;
 
+uniform float scaleX;
+uniform float scaleY;
+uniform float scaleZ;
+
+
 void main()
 {
 	intensity = dot (lightDir, mat3(transpose(inverse(model))) * aNormal);
     TexCoords = aTexCoords;    
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    gl_Position = projection * view * model * vec4( vec3((aPos.x * scaleX), (aPos.y * scaleY), (aPos.z * scaleZ)), 1.0);
 }
